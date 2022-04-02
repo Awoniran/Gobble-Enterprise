@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const AppError = require('./src/utils/AppError/appError');
 
-const apiErrHandler = require('./src/controllers/err/errorHandler');
+const HttpErrHandler = require('./src/controllers/err/errorHandler');
 
 const app = express();
 
@@ -36,6 +36,6 @@ app.use('*', (req, res, next) => {
   );
 });
 
-app.use(apiErrHandler);
+app.use(HttpErrHandler);
 
 module.exports = app;

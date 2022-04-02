@@ -1,4 +1,4 @@
-function response(res, statCode, status, data, token) {
+function HttpResponse(res, statCode, status, data, token) {
   res.status(statCode).json({
     status,
     token,
@@ -6,4 +6,4 @@ function response(res, statCode, status, data, token) {
   });
 }
 
-module.exports = response;
+module.exports = HttpResponse;
