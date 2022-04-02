@@ -3,12 +3,9 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const AppError = require('./src/utils/AppError/appError');
 
-const apiErrHandler = require('./controllers/err/errorHandler');
-const AppError = require('./utils/AppError/appError');
-const api = require('./api/payStack/paystack.js');
-
-// const api = require('./api/routers');
+const apiErrHandler = require('./src/controllers/err/errorHandler');
 
 const app = express();
 
