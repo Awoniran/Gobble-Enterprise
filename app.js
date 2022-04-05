@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const AppError = require('./src/utils/AppError/appError');
 
 const HttpErrHandler = require('./src/controllers/err/errorHandler');
+// const API_version1 = require('./src/api/version/version1');
+const API_version1 = require('./src/api/version/version1');
 
 const app = express();
 
@@ -16,19 +18,19 @@ app.use(helmet());
 //GENERAL MIDDLEWARE
 app.use(bodyParser.json());
 app.use(express.json());
-app.use(morgan('combine'));
+app.use(morgan('combined'));
 
 //APP ROUTERS
-app.use('/', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Welcome to Gooble enterprise API',
-  });
-});
+
+// app.use('/', (req, res) => {
+//   res.status(200).json({
+//     status: 'success',
+//     message: 'Welcome to Gooble enterprise API',
+//   });
+// });
 
 // use this for api version control
-
-// app.use(api);
+app.use(API_version1);
 
 app.use('*', (req, res, next) => {
   return next(

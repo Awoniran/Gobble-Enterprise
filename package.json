@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "Gobble Ecommerce"
+    "url": "gobble-ecommerce"
   },
   "author": "Micheal Awoniran",
   "license": "ISC",
@@ -25,6 +25,7 @@
     "node-fetch": "^3.2.3",
     "nodemailer": "^6.7.3",
     "nodemon": "^2.0.15",
+    "pg": "^8.7.3",
     "pm2": "^5.2.0"
   }
 }
