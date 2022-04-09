@@ -36,6 +36,7 @@ model Product {
   updatedAt     DateTime  @updatedAt
   name          String    @unique
   description   String
+  slug          String
   price         Int
   image         String
   category      String

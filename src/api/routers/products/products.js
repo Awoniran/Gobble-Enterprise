@@ -3,18 +3,25 @@ const {
   HttpAddProduct,
   HttpGetAllProducts,
   HttpGetProduct,
+  HttpEditProduct,
+  HttpDeleteProduct,
 } = require('../../../controllers/products/product');
 const {
   HttpProtectRoute,
   HttpRestrictedTo,
 } = require('../../../controllers/auth/authController');
 
-router.get('/getallproducts', HttpGetAllProducts);
 router
-  .route('/product')
-  .get(HttpGetProduct)
+  .route('/products')
   .post(HttpProtectRoute, HttpRestrictedTo('ADMIN'), HttpAddProduct)
-  .delete()
-  .patch();
+  .get(HttpGetAllProducts);
+
+router
+  .route('/products/:id')
+  .delete(HttpDeleteProduct)
+  .patch(HttpEditProduct)
+  .get(HttpGetProduct);
+
+router.post('/queryProduct');
 
 module.exports = router;
