@@ -1,6 +1,7 @@
-function HttpResponse(res, statCode, status, data, token) {
+function HttpResponse(res, statCode, data, token) {
+  const statusMessage = `${statCode}`.startsWith('2') ? 'success' : 'fail';
   res.status(statCode).json({
-    status,
+    status: statusMessage,
     token,
     data,
   });
