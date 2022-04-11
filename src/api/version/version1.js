@@ -1,16 +1,17 @@
-const app = require('express')();
+const app_v1 = require('express')();
+
+const authRouter = require('../routers/auth/auth');
 const userRouter = require('../routers/users/users');
+const orderRouter = require('../routers/orders/orders');
+const reviewRouter = require('../routers/reviews/reviews');
 const productRouter = require('../routers/products/products');
 const paymentRouter = require('../routers/payments/payments');
-const orderRouter = require('../routers/orders/orders');
-const authRouter = require('../routers/auth/auth');
 
-// app.use('/api/v1', userRouter,paymentRouter,paymentRouter,orderRouter,authRouter);
+app_v1.use('/api/v1', userRouter); //done
+app_v1.use('/api/v1', orderRouter);
+app_v1.use('/api/v1', productRouter); //done
+app_v1.use('/api/v1', paymentRouter);
+app_v1.use('/api/v1', authRouter); //done
+app_v1.use('/api/v1', reviewRouter); //currently working on it
 
-app.use('/api/v1', userRouter);
-app.use('/api/v1', orderRouter);
-app.use('/api/v1', productRouter);
-app.use('/api/v1', paymentRouter);
-app.use('/api/v1', authRouter);
-
-module.exports = app;
+module.exports = app_v1;

@@ -5,6 +5,7 @@ const {
   HttpGetProduct,
   HttpEditProduct,
   HttpDeleteProduct,
+  HttpSearchProduct,
 } = require('../../../controllers/products/product');
 const {
   HttpProtectRoute,
@@ -18,10 +19,11 @@ router
 
 router
   .route('/products/:id')
-  .delete(HttpDeleteProduct)
-  .patch(HttpEditProduct)
+  .delete(HttpProtectRoute, HttpRestrictedTo('ADMIN'), HttpDeleteProduct)
+  .patch(HttpProtectRoute, HttpRestrictedTo('ADMIN'), HttpEditProduct)
   .get(HttpGetProduct);
 
-router.post('/queryProduct');
+router.post('/queryProducts', HttpSearchProduct);
+// console.log(router);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const response = require('../../utils/res/response');
 const AppError = require('../../utils/AppError/appError');
+// const { user } = require('pg/lib/defaults');
 const { user } = new PrismaClient();
 
 function signToken(id) {
@@ -42,7 +43,7 @@ async function HttpSignUp(req, res, next) {
         password: await hashPassword(req.body.password),
       },
     });
-    response(res, 200, newUser);
+    response(res, 200, 'Account created successfully');
   } catch (err) {
     return next(
       new AppError('oppss!!!, something went very wrong,kindly try again', 500)
@@ -87,7 +88,6 @@ async function HttpProtectRoute(req, res, next) {
   });
   if (!currentUser)
     return next(new AppError('there is no user with the provided token', 401));
-
   req.user = currentUser;
   next();
 }
@@ -102,10 +102,39 @@ function HttpRestrictedTo(...roles) {
   };
 }
 
-//will be implemented soon
+async function HttpUpdatePassword(req, res, next) {
+  try {
+    let { password, currentPassword, confirmPassword } = req.body;
+    const User = await user.findFirst({ where: { id: req.user.id } });
+    if (!(await comparePassword(currentPassword, User.password)))
+      return next(new AppError('current password is not correct', 400));
+    if (password !== confirmPassword)
+      return next(new AppError('passwords not match', 400));
+    req.body.password = await hashPassword(password);
+    req.body.confirmPassword = undefined;
+    req.body.currentPassword = undefined;
+    await user.update({ where: { id: req.user.id }, data: req.body });
+    response(res, 200, 'password updated successfully');
+  } catch (err) {
+    return next(
+      new AppError('oppss, an error occurred ,kindly try again', 500)
+    );
+  }
+}
 
-async function HttpResetPassword(req, res, next) {}
-async function HttpForgotPassword(req, res, next) {}
+//will be implemented soon
+async function HttpResetPassword(req, res, next) {
+  // compare the random bytes,
+  // reset the password
+  // set the random bytes in the database to undefined,
+  //
+}
+async function HttpForgotPassword(req, res, next) {
+  //check if the email exist
+  //generate a random byte
+  //hash and save the byte in the database
+  //send the random byte to the user's email
+}
 
 module.exports = {
   HttpLogin,
@@ -114,4 +143,5 @@ module.exports = {
   HttpResetPassword,
   HttpProtectRoute,
   HttpRestrictedTo,
+  HttpUpdatePassword,
 };

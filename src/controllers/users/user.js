@@ -24,7 +24,10 @@ async function HttpGetUser(req, res, next) {
   try {
     const User = await user.findFirst({
       where: { id: +req.params.id, active: true },
-      select: selectOptions,
+      include: {
+        cart: true,
+        orders: true,
+      },
     });
     if (!User)
       return next(
@@ -32,6 +35,7 @@ async function HttpGetUser(req, res, next) {
       );
     return response(res, 200, User);
   } catch (err) {
+    console.log(err.name);
     return next(new AppError(`kindly try again, ${err.message}`, 400));
   }
 }
@@ -99,6 +103,7 @@ async function HttpDeleteAccount(req, res, next) {
     return next(new AppError('An error ocurred, kindly try again', 500));
   }
 }
+
 async function HttpUpdateUser(req, res, next) {
   try {
     if (req.body.password)

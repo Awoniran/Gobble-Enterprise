@@ -3,15 +3,21 @@ const read = require('body-parser/lib/read');
 const AppError = require('../../utils/AppError/appError');
 const response = require('../../utils/res/response');
 const slug = require('slugify');
-const { product } = new PrismaClient();
+const { product, reviews } = new PrismaClient();
 
 function slugify(name) {
   return slug(name, '_', { lower: true });
 }
 
+async function averageReview() {
+  const Reviews = await reviews.findMany();
+  //calculate averageReview on each product
+}
+
 async function existingProduct(name) {
   return await product.findUnique({ where: { name } });
 }
+
 async function productExist(id) {
   return await product.findUnique({ where: { id } });
 }
@@ -33,6 +39,7 @@ async function HttpGetProduct(req, res, next) {
       return next(new AppError('no product found', 404));
     const getProduct = await product.findFirst({
       where: { id: +req.params.id },
+      include: { Reviews: true },
     });
     response(res, 200, getProduct);
   } catch (err) {
@@ -98,17 +105,24 @@ async function HttpEditProduct(req, res, next) {
 
 async function HttpSearchProduct(req, res, next) {
   try {
+    const query = req.body.query;
+    /// have to build a more robust search handler later
+    const searchProducts = await product.findMany({ where: { name: query } });
+    if (searchProducts.length === 0)
+      return next(new AppError('no result found', 404));
+    response(res, 200, searchProducts);
   } catch (err) {
-    console.log(err.message);
     return next(
       new AppError('something went very wrong, kindly try again', 500)
     );
   }
 }
+
 module.exports = {
   HttpAddProduct,
   HttpGetProduct,
   HttpEditProduct,
   HttpDeleteProduct,
+  HttpSearchProduct,
   HttpGetAllProducts,
 };
