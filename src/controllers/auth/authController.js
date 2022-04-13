@@ -55,17 +55,16 @@ async function HttpLogin(req, res, next) {
   try {
     const { email, password } = req.body;
     if (!email || !password)
-      return next(new AppError('invalid username or password', 401));
+      return next(new AppError('provide your email and password', 401));
     const user = await existingUser(email);
-    if (!user)
-      return next(new AppError('no user with the provided email', 404));
+    if (!user) return next(new AppError('invalid username of password', 404));
     if (!(await comparePassword(password, user.password))) {
       return next(new AppError('invalid username or password', 401));
     }
     const token = signToken(user.id);
     response(res, 200, undefined, token);
   } catch (err) {
-    console.log(err.stack);
+    // console.log(err.stack);
     return next(
       new AppError('opps!!,something went wrong,kindly try again', 500)
     );
@@ -81,7 +80,9 @@ async function HttpProtectRoute(req, res, next) {
     token = req.headers.authorization.split(' ')[1];
   }
   if (!token)
-    return next(new AppError('you are not logged in , login to access', 401));
+    return next(
+      new AppError('you are not logged in , kindly login to access', 401)
+    );
   const payload = verifyToken(token);
   const currentUser = await user.findFirst({
     where: { id: payload.id, active: true },
@@ -116,8 +117,9 @@ async function HttpUpdatePassword(req, res, next) {
     await user.update({ where: { id: req.user.id }, data: req.body });
     response(res, 200, 'password updated successfully');
   } catch (err) {
+    req.body = undefined;
     return next(
-      new AppError('oppss, an error occurred ,kindly try again', 500)
+      new AppError('oppss!!!, an error occurred ,kindly try again', 500)
     );
   }
 }
