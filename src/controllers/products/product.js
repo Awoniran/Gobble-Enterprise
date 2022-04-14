@@ -35,10 +35,10 @@ async function HttpGetAllProducts(req, res, next) {
 
 async function HttpGetProduct(req, res, next) {
   try {
-    if (!(await productExist(+req.params.id)))
+    if (!(await productExist(+req.params.productId)))
       return next(new AppError('no product found', 404));
     const getProduct = await product.findFirst({
-      where: { id: +req.params.id },
+      where: { id: +req.params.productId },
       include: { Reviews: true },
     });
     response(res, 200, getProduct);
@@ -88,6 +88,7 @@ async function HttpDeleteProduct(req, res, next) {
     return next(new AppError(`kindly try again, ${message}`, 500));
   }
 }
+
 async function HttpEditProduct(req, res, next) {
   try {
     if (!(await productExist(+req.params.id)))
@@ -103,14 +104,23 @@ async function HttpEditProduct(req, res, next) {
   }
 }
 
+function checkName(query, reqQuery) {
+  return query.map((product) => {
+    th;
+    if (
+      product.name.includes(reqQuery.trim()) ||
+      product.name.startsWith(reqQuery.trim())
+    ) {
+      return product;
+    }
+  });
+}
+
 async function HttpSearchProduct(req, res, next) {
   try {
-    const query = req.body.query;
-    /// have to build a more robust search handler later
-    const searchProducts = await product.findMany({ where: { name: query } });
-    if (searchProducts.length === 0)
-      return next(new AppError('no result found', 404));
-    response(res, 200, searchProducts);
+    const products = await product.findMany();
+    const searchResults = checkName(products, req.body.query);
+    response(res, 200, searchResults);
   } catch (err) {
     return next(
       new AppError('something went very wrong, kindly try again', 500)

@@ -11,3 +11,4 @@ function startServer(instance) {
 }
 
 startServer(server);
+// require('./public/images/users')

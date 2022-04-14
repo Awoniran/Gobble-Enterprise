@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const AppError = require('../../utils/AppError/appError');
 const response = require('../../utils/res/response');
-const { cart, product } = new PrismaClient();
+const { cart, product, user } = new PrismaClient();
 
 async function productExist(id) {
   return await product.findFirst({
@@ -46,15 +46,19 @@ async function HttpRemoveProductFromCart(req, res, next) {
   }
 }
 
-async function HttMoveToOrder(req, res, next) {}
+async function HttMoveToOrder(req, res, next) {
+  try {
+  } catch (err) {
+    return next(new AppError('something went very wrong', 500));
+  }
+}
 
 async function HttpMyCart(req, res, next) {
   try {
     const myCart = await cart.findMany({ where: { userId: +req.user.id } });
-    if (!myCart) return next(new AppError('nothing found in your cart', 404));
+    if (!myCart) return next(new AppError('your cart is empty', 404));
     response(res, 200, myCart, calcTotalPrice(myCart));
   } catch (err) {
-    console.log(err.message);
     return next(new AppError('kindly try again', 500));
   }
 }

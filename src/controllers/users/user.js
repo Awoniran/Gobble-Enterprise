@@ -106,8 +106,14 @@ async function HttpDeleteAccount(req, res, next) {
 
 async function HttpUpdateUser(req, res, next) {
   try {
-    if (req.body.password)
-      return next(new AppError('this route is not for updating password', 400));
+    const { email, role, password } = req.body;
+    if (email || role || password)
+      return next(
+        new AppError(`can't update role, email and password on this route`, 400)
+      );
+    if (req.file) {
+      req.body.image = req.file.filename;
+    }
     const loggedInUser = await user.update({
       where: { id: +req.user.id },
       data: req.body,

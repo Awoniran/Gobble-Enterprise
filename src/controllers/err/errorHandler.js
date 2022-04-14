@@ -1,6 +1,6 @@
 function HttpErrHandler(err, req, res, next) {
   // err.name===
-  res.status(err.statusCode).json({
+  res.status(400).json({
     status: err.status,
     error: {
       statusCode: err.statusCode,

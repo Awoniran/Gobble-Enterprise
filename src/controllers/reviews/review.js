@@ -46,7 +46,7 @@ async function getReviews(req, res, next) {
     });
     response(res, 200, Reviews);
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
     return next(new AppError('An error ocurred, kindly try again', 500));
   }
 }

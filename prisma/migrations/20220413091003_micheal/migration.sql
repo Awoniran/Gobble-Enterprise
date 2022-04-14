@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Orders" ALTER COLUMN "product" SET NOT NULL,
+ALTER COLUMN "product" SET DATA TYPE TEXT;
