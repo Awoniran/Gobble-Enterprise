@@ -6,7 +6,6 @@
   "scripts": {
     "test": "jest",
     "start": "node server.js",
-"postinstall":"npx prisma migrate deploy",
     "dev": "nodemon server.s",
     "pm2": "pm2 start server.js -i max",
     "reload": "pm2 reload server.js",
