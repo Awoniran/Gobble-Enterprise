@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "jest",
-    "start": "node server.js",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
     "dev": "nodemon server.s",
     "pm2": "pm2 start server.js -i max",
     "reload": "pm2 reload server.js",
     "stop": "pm2 stop server.js"
+
   },
   "repository": {
     "type": "git",
