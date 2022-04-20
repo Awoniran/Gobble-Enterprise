@@ -6,8 +6,8 @@ const port = process.env.PORT;
 
 // MAKE THIS BECAUSE OF PM2 ECOSYSTEM
 function startServer(instance) {
-   instance.listen(8000, () => {
-      console.log(`Server running on port ${8000}`);
+   instance.listen(port, () => {
+      console.log(`Server running on port ${port}`);
    });
 }
 
