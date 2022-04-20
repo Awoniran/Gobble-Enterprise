@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String //required
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  email     String    @unique //required
-  role      Role      @default(USER)
-  active    Boolean   @default(true)
-  image     String?
-  address   String?
-  phoneNo   String?
-  reviews   Reviews[]
-  orders    Orders[]
-  cart      cart[]
+  id                   Int       @id @default(autoincrement())
+  name                 String //required
+  password             String
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  email                String    @unique //required
+  role                 Role      @default(USER)
+  active               Boolean   @default(true)
+  image                String?
+  address              String?
+  phoneNo              String?
+  reviews              Reviews[]
+  orders               Orders[]
+  cart                 cart[]
+  passwordResetToken   String?
+  passwordResetExpires Int?
 
 }
 
@@ -42,6 +44,7 @@ model Product {
   category      String
   averageReview Float
   Reviews       Reviews[]
+  // imageCovers   String[]
 }
 
 model Reviews {

@@ -4,7 +4,7 @@
   "description": "gobble enterprise",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node server.js",
     "dev": "nodemon server.s",
     "pm2": "pm2 start server.js -i max",
@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^3.12.0",
+    "aws-sdk": "^2.1116.0",
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.2",
@@ -26,6 +27,8 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "helmet": "^5.0.2",
+    "html-to-text": "^8.1.0",
+    "jest": "^27.5.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
@@ -34,8 +37,11 @@
     "nodemon": "^2.0.15",
     "pg": "^8.7.3",
     "pm2": "^5.2.0",
+    "pug": "^3.0.2",
+    "puppeteer": "^13.5.2",
     "sharp": "^0.30.3",
-    "slugify": "^1.6.5"
+    "slugify": "^1.6.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "prisma": "^3.12.0"

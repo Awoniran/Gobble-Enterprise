@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const AppError = require('../../utils/AppError/appError');
 const response = require('../../utils/res/response');
 const { user } = new PrismaClient();
+const Email = require('../../utils/email/email');
 
 const selectOptions = {
   id: true,

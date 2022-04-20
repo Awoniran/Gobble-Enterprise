@@ -8,29 +8,39 @@ const {
   HttpDeleteAccount,
   HttpUpdateUser,
 } = require('../../../controllers/users/user');
+
 const {
   HttpProtectRoute,
   HttpRestrictedTo,
 } = require('../../../controllers/auth/authController');
-const {
-  upload,
-  resizeUserPhoto,
-} = require('../../../helpers/uploads/fileUpload');
 
-router.route('/user/:id').get(HttpProtectRoute, HttpGetUser);
+const { upload, resizePhoto } = require('../../../helpers/uploads/fileUpload');
+
+const { upLoad } = require('../../../helpers/uploads/aws/aws_sdk');
+
+router
+  .route('/user/:id')
+  .get(HttpProtectRoute, HttpRestrictedTo('ADMIN'), HttpGetUser);
+
+//edit users data and upload of pictures
 router.patch(
   '/user/editProfile',
   HttpProtectRoute,
   upload.single('image'),
-  resizeUserPhoto,
+  resizePhoto('users'),
   HttpUpdateUser
 );
+
+router.get('/uploads', HttpProtectRoute, upLoad);
+
+//route to get all active users
 router.get(
   '/users',
   HttpProtectRoute,
   HttpRestrictedTo('ADMIN'),
   HttpGetAllUser
 );
+// to get the user profile
 router.get('/me', HttpProtectRoute, HttpGetMe);
 
 //a route for the super user/admin to make a user an admin by the user's gmail
