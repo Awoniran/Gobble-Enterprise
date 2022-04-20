@@ -6,11 +6,11 @@ const port = process.env.PORT;
 
 // MAKE THIS BECAUSE OF PM2 ECOSYSTEM
 function startServer(instance) {
-   instance.listen(port, () => {
-      console.log(`Server running on port ${port}`);
+   instance.listen(8000, () => {
+      console.log(`Server running on port ${8000}`);
    });
 }
 
 startServer(server);
 
-console.log(process.env.PRISMA_CONNECT_STRING_LOCAL);
+// console.log(process.env.PRISMA_CONNECT_STRING_LOCAL);
