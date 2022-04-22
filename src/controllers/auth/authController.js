@@ -32,7 +32,7 @@ async function verifyToken(token) {
 async function HttpSignUp(req, res, next) {
    try {
       const { email, password, name, role } = req.body;
-      if (!email || !password || !name || role)
+      if (!email || !password || !name)
          return next(
             new AppError(
                `${role}`
