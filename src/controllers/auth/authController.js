@@ -51,6 +51,7 @@ async function HttpSignUp(req, res, next) {
             email: req.body.email,
             name: req.body.name,
             password: await hashPassword(req.body.password),
+            role:req.body.role
          },
       });
       const url = `${req.protocol}://${req.get(
