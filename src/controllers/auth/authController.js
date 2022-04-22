@@ -25,14 +25,14 @@ async function comparePassword(userPassword, password) {
    return await bcrypt.compare(userPassword, password);
 }
 
-function verifyToken(token) {
+async function verifyToken(token) {
    return jwt.verify(token, process.env.JWT_SECRET);
 }
 
 async function HttpSignUp(req, res, next) {
    try {
       const { email, password, name, role } = req.body;
-      if (!email || !password || !name || role)
+      if (!email || !password || !name)
          return next(
             new AppError(
                `${role}`
