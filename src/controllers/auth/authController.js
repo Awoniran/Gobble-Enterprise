@@ -61,6 +61,8 @@ async function HttpSignUp(req, res, next) {
       response(res, 200, 'Account created successfully', signToken(newUser.id));
    } catch (err) {
       console.log(err);
+      if (err.code === 'ESOCKET' && err.port === 465)
+         return next(new AppError('account created', 200));
       return next(
          new AppError(
             'oppss!!!, something went very wrong,kindly try again',
@@ -102,7 +104,9 @@ async function HttpProtectRoute(req, res, next) {
       return next(
          new AppError('you are not logged in , kindly login to access', 401)
       );
-   const payload = verifyToken(token);
+   const payload = await verifyToken(token);
+
+   // console.log(payload);
    const currentUser = await user.findFirst({
       where: { id: payload.id, active: true },
    });
