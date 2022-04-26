@@ -25,8 +25,13 @@ async function comparePassword(userPassword, password) {
    return await bcrypt.compare(userPassword, password);
 }
 
-async function verifyToken(token) {
-   return jwt.verify(token, process.env.JWT_SECRET);
+function verifyToken(token) {
+   try {
+      return jwt.verify(token, process.env.JWT_SECRET);
+   } catch (err) {
+      console.log(err.message);
+      return next(new AppError(`you're not logged in`, 401));
+   }
 }
 
 async function HttpSignUp(req, res, next) {
