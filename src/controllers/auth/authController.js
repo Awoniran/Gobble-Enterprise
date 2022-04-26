@@ -93,20 +93,20 @@ async function HttpLogin(req, res, next) {
 }
 
 async function HttpProtectRoute(req, res, next) {
-   let token;
+   let token = undefined;
    if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
    ) {
       token = req.headers.authorization.split(' ')[1];
    }
+   console.log(token);
    if (!token)
       return next(
          new AppError('you are not logged in , kindly login to access', 401)
       );
    const payload = await verifyToken(token);
-
-   // console.log(payload);
+   console.log(payload);
    const currentUser = await user.findFirst({
       where: { id: payload.id, active: true },
    });
@@ -115,6 +115,7 @@ async function HttpProtectRoute(req, res, next) {
          new AppError('there is no user with the provided token', 401)
       );
    req.user = currentUser;
+   console.log(req.user);
    next();
 }
 
