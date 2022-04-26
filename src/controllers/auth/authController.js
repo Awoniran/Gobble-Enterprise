@@ -26,12 +26,7 @@ async function comparePassword(userPassword, password) {
 }
 
 function verifyToken(token) {
-   try {
-      return jwt.verify(token, process.env.JWT_SECRET);
-   } catch (err) {
-      console.log(err.message);
-      return next(new AppError(`you're not logged in`, 401));
-   }
+   return jwt.verify(token, process.env.JWT_SECRET);
 }
 
 async function HttpSignUp(req, res, next) {
@@ -110,8 +105,8 @@ async function HttpProtectRoute(req, res, next) {
       return next(
          new AppError('you are not logged in , kindly login to access', 401)
       );
-   const payload = await verifyToken(token);
-   console.log(payload);
+   const payload = jwt.verify(token, process.env.JWT_SECRET);
+   // console.log(payload);
    const currentUser = await user.findFirst({
       where: { id: payload.id, active: true },
    });
