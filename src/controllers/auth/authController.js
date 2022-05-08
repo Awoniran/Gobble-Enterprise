@@ -79,7 +79,7 @@ async function HttpLogin(req, res, next) {
          return next(new AppError('invalid username or password', 401));
       }
       const token = signToken(user.id);
-      response(res, 200, undefined, token);
+      response(res, 200, user, token);
    } catch (err) {
       // console.log(err.stack);
       return next(
@@ -102,10 +102,6 @@ async function HttpProtectRoute(req, res, next) {
          new AppError('you are not logged in , kindly login to access', 401)
       );
    const payload = await jwt.verify(token, process.env.JWT_SECRET);
-   if (!payload)
-      return next(
-         new AppError(`you're not logged in, kindly login to access`, 400)
-      );
    const currentUser = await user.findFirst({
       where: { id: payload.id, active: true },
    });
