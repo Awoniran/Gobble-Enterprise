@@ -194,9 +194,7 @@ async function HttpForgotPassword(req, res, next) {
       data: req.body,
    });
    try {
-      const resetUrl = `${req.protocol}://${req.get(
-         'host'
-      )}/api/v1/resetPassword/${randomBytes}`;
+      const resetUrl = `https://goble.netlify.app/forgot-password/${randomBytes}`;
       await new Email(patchUser, resetUrl).sendPasswordReset();
       response(res, 200, 'token sent to email');
    } catch (err) {
