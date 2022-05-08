@@ -25,10 +25,6 @@ async function comparePassword(userPassword, password) {
    return await bcrypt.compare(userPassword, password);
 }
 
-function verifyToken(token) {
-   return jwt.verify(token, process.env.JWT_SECRET);
-}
-
 async function HttpSignUp(req, res, next) {
    try {
       const { email, password, name, role } = req.body;
@@ -105,8 +101,11 @@ async function HttpProtectRoute(req, res, next) {
       return next(
          new AppError('you are not logged in , kindly login to access', 401)
       );
-   const payload = jwt.verify(token, process.env.JWT_SECRET);
-   // console.log(payload);
+   const payload = await jwt.verify(token, process.env.JWT_SECRET);
+   if (!payload)
+      return next(
+         new AppError(`you're not logged in, kindly login to access`, 400)
+      );
    const currentUser = await user.findFirst({
       where: { id: payload.id, active: true },
    });
