@@ -74,7 +74,7 @@ async function HttpLogin(req, res, next) {
       if (!email || !password)
          return next(new AppError('provide your email and password', 401));
       const user = await existingUser(email);
-      if (!user) return next(new AppError('invalid username of password', 404));
+      if (!user) return next(new AppError('invalid username or password', 404));
       if (!(await comparePassword(password, user.password))) {
          return next(new AppError('invalid username or password', 401));
       }
