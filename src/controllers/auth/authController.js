@@ -56,7 +56,6 @@ async function HttpSignUp(req, res, next) {
       await new Email(newUser, url).sendWelcome();
       response(res, 200, 'Account created successfully', signToken(newUser.id));
    } catch (err) {
-      console.log(err);
       if (err.code === 'ESOCKET' && err.port === 465)
          return next(new AppError('account created', 200));
       return next(
