@@ -57,15 +57,15 @@ async function HttpAddProduct(req, res, next) {
       req.body.slug = slugify(name);
       if (await existingProduct(name))
          return next(new AppError('product already exist', 400));
-      if (
-         !name ||
-         !description ||
-         !price ||
-         !image ||
-         !category ||
-         !averageReview
-      )
-         return next(new AppError('missing required field(s)', 400));
+      // if (
+      //    !name ||
+      //    !description ||
+      //    !price ||
+      //    !image ||
+      //    !category ||
+      //    !averageReview
+      // )
+      //    return next(new AppError('missing required field(s)', 400));
       const newProduct = await product.create({
          data: req.body,
       });
