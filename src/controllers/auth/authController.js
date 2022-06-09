@@ -80,7 +80,6 @@ async function HttpLogin(req, res, next) {
       const token = signToken(user.id);
       response(res, 200, user, token);
    } catch (err) {
-      // console.log(err.stack);
       return next(
          new AppError('opps!!,something went wrong,kindly try again', 500)
       );
@@ -88,14 +87,13 @@ async function HttpLogin(req, res, next) {
 }
 
 async function HttpProtectRoute(req, res, next) {
-   let token = undefined;
+   let token;
    if (
       req.headers.authorization &&
       req.headers.authorization.startsWith('Bearer')
    ) {
       token = req.headers.authorization.split(' ')[1];
    }
-   console.log(token);
    if (!token)
       return next(
          new AppError('you are not logged in , kindly login to access', 401)
@@ -109,7 +107,6 @@ async function HttpProtectRoute(req, res, next) {
          new AppError('there is no user with the provided token', 401)
       );
    req.user = currentUser;
-   console.log(req.user);
    next();
 }
 
@@ -168,8 +165,6 @@ async function HttpResetPassword(req, res, next) {
          password: await hashPassword(req.body.password),
       },
    });
-   console.log(updateUser);
-
    const jwt = signToken(userExist.id);
    response(res, 200, 'reset successful', jwt);
 }

@@ -27,7 +27,6 @@ async function HttpGetAllProducts(req, res, next) {
       if (!getProducts) return next(new AppError('no product found', 404));
       response(res, 200, getProducts);
    } catch (err) {
-      console.log(err.stack);
       return next(
          new AppError('opps!!! something went wrong, try again ', 500)
       );
@@ -45,7 +44,6 @@ async function HttpGetProduct(req, res, next) {
       response(res, 200, getProduct);
    } catch (err) {
       const message = err.message.split('id: ')[2];
-      console.log(message);
       return next(new AppError(`kindly try again, ${message}`, 500));
    }
 }
@@ -57,21 +55,11 @@ async function HttpAddProduct(req, res, next) {
       req.body.slug = slugify(name);
       if (await existingProduct(name))
          return next(new AppError('product already exist', 400));
-      // if (
-      //    !name ||
-      //    !description ||
-      //    !price ||
-      //    !image ||
-      //    !category ||
-      //    !averageReview
-      // )
-      //    return next(new AppError('missing required field(s)', 400));
       const newProduct = await product.create({
          data: req.body,
       });
       response(res, 200, newProduct);
    } catch (err) {
-      console.log(err.stack);
       return next(
          new AppError('opps!! kindly try again, something went wrong', 500)
       );
@@ -85,8 +73,7 @@ async function HttpDeleteProduct(req, res, next) {
       const query = await product.delete({ where: { id: +req.params.id } });
       response(res, 200, 'success');
    } catch (err) {
-      const message = err.message.split('id: ')[2];
-      return next(new AppError(`kindly try again, ${message}`, 500));
+      return next(new AppError(`kindly try again, ${err.message}`, 500));
    }
 }
 
