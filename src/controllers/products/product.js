@@ -68,9 +68,11 @@ async function HttpAddProduct(req, res, next) {
 
 async function HttpDeleteProduct(req, res, next) {
    try {
-      if (!(await productExist(+req.params.id)))
+      if (!(await productExist(+req.params.productId)))
          return next(new AppError('no product found', 404));
-      const query = await product.delete({ where: { id: +req.params.id } });
+      const query = await product.delete({
+         where: { id: +req.params.productId },
+      });
       response(res, 200, 'success');
    } catch (err) {
       return next(new AppError(`kindly try again, ${err.message}`, 500));
