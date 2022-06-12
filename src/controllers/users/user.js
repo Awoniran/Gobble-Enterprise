@@ -36,7 +36,6 @@ async function HttpGetUser(req, res, next) {
          );
       return response(res, 200, User);
    } catch (err) {
-      console.log(err.name);
       return next(new AppError(`kindly try again, ${err.message}`, 400));
    }
 }
@@ -70,7 +69,6 @@ async function HttpGetMe(req, res, next) {
          return next(new AppError('kindly login to access this route', 401));
       response(res, 200, currentUser);
    } catch (err) {
-      // console.log(err.stack);
       return next(new AppError('kindly try again', 400));
    }
 }
@@ -99,9 +97,8 @@ async function HttpDeleteAccount(req, res, next) {
          where: { id: req.user.id },
          data: { active: false },
       });
-      response(res, 204);
+      response(res, 204, 'user deleted successfully');
    } catch (err) {
-      console.log(err.message);
       return next(new AppError('An error ocurred, kindly try again', 500));
    }
 }

@@ -12,5 +12,3 @@ function startServer(instance) {
 }
 
 startServer(server);
-
-// console.log(process.env.PRISMA_CONNECT_STRING_LOCAL);

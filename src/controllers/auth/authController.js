@@ -87,27 +87,34 @@ async function HttpLogin(req, res, next) {
 }
 
 async function HttpProtectRoute(req, res, next) {
-   let token;
-   if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-   ) {
-      token = req.headers.authorization.split(' ')[1];
+   try {
+      let token;
+      if (
+         req.headers.authorization &&
+         req.headers.authorization.startsWith('Bearer')
+      ) {
+         token = req.headers.authorization.split(' ')[1];
+      }
+      if (!token)
+         return next(
+            new AppError('you are not logged in , kindly login to access', 401)
+         );
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      const currentUser = await user.findFirst({
+         where: { id: payload.id, active: true },
+      });
+      if (!currentUser)
+         return next(
+            new AppError('there is no user with the provided token', 401)
+         );
+      req.user = currentUser;
+      next();
+   } catch (err) {
+      return res.status(400).json({
+         status: 'fail',
+         message: 'your session expired, re-login and try again',
+      });
    }
-   if (!token)
-      return next(
-         new AppError('you are not logged in , kindly login to access', 401)
-      );
-   const payload = await jwt.verify(token, process.env.JWT_SECRET);
-   const currentUser = await user.findFirst({
-      where: { id: payload.id, active: true },
-   });
-   if (!currentUser)
-      return next(
-         new AppError('there is no user with the provided token', 401)
-      );
-   req.user = currentUser;
-   next();
 }
 
 function HttpRestrictedTo(...roles) {

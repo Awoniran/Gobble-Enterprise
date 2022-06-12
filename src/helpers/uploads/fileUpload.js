@@ -4,7 +4,7 @@ const AppError = require('../../utils/AppError/appError');
 const storage = multer.memoryStorage();
 const { uuidv4 } = require('../uploads/aws/aws_sdk');
 // uuidv4();
-console.log(uuidv4);
+
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
