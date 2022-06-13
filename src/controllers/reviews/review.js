@@ -2,11 +2,12 @@ const { PrismaClient } = require('@prisma/client');
 const response = require('../../utils/res/response');
 const { reviews, product } = new PrismaClient();
 const AppError = require('../../utils/AppError/appError');
-const { query_timeout } = require('pg/lib/defaults');
+const { dumbReview } = require('../../utils/helpers');
 
 async function productExist(id) {
    return await product.findFirst({ where: { id } });
 }
+
 async function addReview(req, res, next) {
    try {
       if (!(await productExist(+req.params.id)))
@@ -27,11 +28,12 @@ async function addReview(req, res, next) {
 
 async function getReviews(req, res, next) {
    try {
-      const Reviews = await reviews.findMany({
+      let reviews = await reviews.findMany({
          where: { productId: +req.params.id },
          include: { User: true },
       });
-      response(res, 200, Reviews);
+      reviews = reviews.map((review) => dumbReview(review));
+      response(res, 200, reviews);
    } catch (err) {
       return next(new AppError('An error ocurred, kindly try again', 500));
    }

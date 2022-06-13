@@ -6,6 +6,7 @@ const response = require('../../utils/res/response');
 const AppError = require('../../utils/AppError/appError');
 const { user } = new PrismaClient();
 const Email = require('../../utils/email/email');
+const { dumbUser } = require('../../utils/helpers');
 
 function signToken(id) {
    return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -78,7 +79,7 @@ async function HttpLogin(req, res, next) {
          return next(new AppError('invalid username or password', 401));
       }
       const token = signToken(user.id);
-      response(res, 200, user, token);
+      response(res, 200, dumbUser(user), token);
    } catch (err) {
       return next(
          new AppError('opps!!,something went wrong,kindly try again', 500)
