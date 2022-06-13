@@ -60,7 +60,6 @@ async function HttpRemoveProductFromCart(req, res, next) {
 async function HttpMyCart(req, res, next) {
    try {
       const myCart = await cart.findMany({ where: { userId: +req.user.id } });
-      if (!myCart) return next(new AppError('your cart is empty', 404));
       response(res, 200, myCart, calcTotalPrice(myCart));
    } catch (err) {
       return next(new AppError('kindly try again', 500));
