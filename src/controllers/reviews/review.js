@@ -28,12 +28,13 @@ async function addReview(req, res, next) {
 
 async function getReviews(req, res, next) {
    try {
-      let reviews = await reviews.findMany({
+      let Reviews = await reviews.findMany({
          where: { productId: +req.params.id },
          include: { User: true },
       });
-      reviews = reviews.map((review) => dumbReview(review));
-      response(res, 200, reviews);
+      console.log(Reviews);
+      Reviews = Reviews.map((review) => dumbReview(review));
+      response(res, 200, Reviews);
    } catch (err) {
       return next(new AppError('An error ocurred, kindly try again', 500));
    }
