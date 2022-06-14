@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const AppError = require('../../utils/AppError/appError');
 const response = require('../../utils/res/response');
 const { user } = new PrismaClient();
+const { dumbUser } = require('../../utils/helpers');
 const Email = require('../../utils/email/email');
 
 const selectOptions = {
@@ -34,7 +35,7 @@ async function HttpGetUser(req, res, next) {
          return next(
             new AppError('user not found, kindly entered a valid id', 404)
          );
-      return response(res, 200, User);
+      return response(res, 200, dumbUser(User));
    } catch (err) {
       return next(new AppError(`kindly try again, ${err.message}`, 400));
    }

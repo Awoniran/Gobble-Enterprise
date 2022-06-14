@@ -32,7 +32,6 @@ async function getReviews(req, res, next) {
          where: { productId: +req.params.id },
          include: { User: true },
       });
-      console.log(Reviews);
       Reviews = Reviews.map((review) => dumbReview(review));
       response(res, 200, Reviews);
    } catch (err) {
