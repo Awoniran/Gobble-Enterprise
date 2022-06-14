@@ -127,11 +127,28 @@ async function HttpUpdateUser(req, res, next) {
    }
 }
 
+async function HttpRemoveUser(req, res, next) {
+   try {
+      const existingUser = await user.findFirst({
+         where: { id: +req.params.id },
+      });
+      if (!existingUser)
+         return next(
+            new AppError(`no user with the provided id :${req.params.id}`)
+         );
+      const user = await user.delete({ where: { id: +req.params.id } });
+      response(res, 200, 'user deleted');
+   } catch (err) {
+      return next(new AppError(`kindly try again!!! ${err.message}`, 500));
+   }
+}
+
 module.exports = {
    HttpGetMe,
    HttpGetUser,
    HttpMakeAdmin,
    HttpGetAllUser,
    HttpUpdateUser,
+   HttpRemoveUser,
    HttpDeleteAccount,
 };
