@@ -136,7 +136,7 @@ async function HttpRemoveUser(req, res, next) {
          return next(
             new AppError(`no user with the provided id :${req.params.id}`)
          );
-      const user = await user.delete({ where: { id: +req.params.id } });
+      await user.delete({ where: { id: +req.params.id } });
       response(res, 200, 'user deleted');
    } catch (err) {
       return next(new AppError(`kindly try again!!! ${err.message}`, 500));
